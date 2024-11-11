@@ -56,7 +56,7 @@ public class UserController {
 
             return ResponseEntity.status(HttpStatus.OK).body(userService.save(userDb));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(user);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
     }
 
