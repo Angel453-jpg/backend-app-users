@@ -1,6 +1,10 @@
 package com.springboot.backend.angel.usersapp.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -10,15 +14,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
     private String name;
 
     @Column(name = "last_name")
+    @NotBlank
     private String lastName;
 
+    @NotEmpty
+    @Email
     private String email;
 
+    @NotBlank
+    @Size(min = 4, max = 12)
     private String username;
 
+    @NotBlank
     private String password;
 
     public Long getId() {
