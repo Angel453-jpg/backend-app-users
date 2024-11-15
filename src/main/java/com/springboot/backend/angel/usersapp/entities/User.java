@@ -14,22 +14,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "no puede estar vacío")
     private String name;
 
     @Column(name = "last_name")
-    @NotBlank
+    @NotBlank(message = "no puede estar vacío")
     private String lastName;
 
-    @NotEmpty
-    @Email
+    @NotEmpty(message = "no puede estar vacío")
+    @Email(message = "no es una dirección de correo valida")
     private String email;
 
-    @NotBlank
-    @Size(min = 4, max = 12)
+    @NotBlank(message = "no puede estar vacío")
+    @Size(min = 4, max = 12, message = "el tamaño tiene que estar entre 4 y 12 caracteres")
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "no puede estar vacío")
     private String password;
 
     public Long getId() {
