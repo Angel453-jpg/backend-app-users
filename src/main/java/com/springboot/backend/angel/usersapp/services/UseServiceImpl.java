@@ -2,6 +2,8 @@ package com.springboot.backend.angel.usersapp.services;
 
 import com.springboot.backend.angel.usersapp.entities.User;
 import com.springboot.backend.angel.usersapp.respositories.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,12 @@ public class UseServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public List<User> findAll() {
         return (List<User>) repository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<User> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     @Override
