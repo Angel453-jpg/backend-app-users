@@ -31,7 +31,7 @@ public class UserController {
 
     @GetMapping("/page/{page}")
     public Page<User> listPageable(@PathVariable Integer page) {
-        Pageable pageable = PageRequest.of(page, 5);
+        Pageable pageable = PageRequest.of(page, 4);
         return userService.findAll(pageable);
     }
 
@@ -92,10 +92,7 @@ public class UserController {
 
     private static ResponseEntity<Map<String, String>> validation(BindingResult result) {
         Map<String, String> errors = new HashMap<>();
-        result.getFieldErrors().forEach(error -> {
-            errors.put(error.getField(), "El campo " + error.getField() + " " + error.getDefaultMessage());
-        });
-
+        result.getFieldErrors().forEach(error -> errors.put(error.getField(), "El campo " + error.getField() + " " + error.getDefaultMessage()));
         return ResponseEntity.badRequest().body(errors);
     }
 }
