@@ -14,6 +14,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.springboot.backend.angel.usersapp.auth.TokenJwtConfig.SECRET_KEY;
 
@@ -51,7 +54,22 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authResult.getPrincipal();
         String username = user.getUsername();
 
-        String jwt = Jwts.builder().subject(username).signWith(SECRET_KEY).compact();
+        String jwt = Jwts.builder()
+                .subject(username)
+                .signWith(SECRET_KEY)
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + 3600000))
+                .compact();
+        response.addHeader("Authorization", "Bearer " + jwt);
+
+        Map<String, String> body = new HashMap<>();
+        body.put("token", jwt);
+        body.put("username", username);
+        body.put("message", String.format("Hola %s has iniciado sesión con éxito", username));
+
+        response.getWriter().write(new ObjectMapper().writeValueAsString(body));
+        response.setContentType("application/json");
+        response.setStatus(200);
 
     }
 
