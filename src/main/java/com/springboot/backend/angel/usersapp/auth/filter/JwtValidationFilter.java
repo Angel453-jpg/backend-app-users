@@ -1,6 +1,7 @@
 package com.springboot.backend.angel.usersapp.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.springboot.backend.angel.usersapp.auth.SimpleGrantedAuthorityJsonCreator;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -50,9 +51,11 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
             String username = (String) claims.get("username");
             Object authoritiesClaims = claims.get("authorities");
             Collection<? extends GrantedAuthority> roles = Arrays.asList(
-                    new ObjectMapper().readValue(authoritiesClaims.toString().getBytes(), SimpleGrantedAuthority[].class));
+                    new ObjectMapper()
+                            .addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityJsonCreator.class)
+                            .readValue(authoritiesClaims.toString().getBytes(), SimpleGrantedAuthority[].class));
 
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, roles);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, roles);
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             chain.doFilter(request, response);
 
