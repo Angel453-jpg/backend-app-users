@@ -2,6 +2,7 @@ package com.springboot.backend.angel.usersapp.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.backend.angel.usersapp.entities.User;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 
+import static com.springboot.backend.angel.usersapp.auth.TokenJwtConfig.SECRET_KEY;
+
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationM;
@@ -25,8 +28,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
-        String username = null;
-        String password = null;
+        String username;
+        String password;
 
         try {
             User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
@@ -44,7 +47,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult)
             throws IOException, ServletException {
-        super.successfulAuthentication(request, response, chain, authResult);
+
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authResult.getPrincipal();
+        String username = user.getUsername();
+
+        String jwt = Jwts.builder().subject(username).signWith(SECRET_KEY).compact();
+
     }
 
     @Override
