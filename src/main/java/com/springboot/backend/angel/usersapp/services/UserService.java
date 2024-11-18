@@ -1,6 +1,7 @@
 package com.springboot.backend.angel.usersapp.services;
 
 import com.springboot.backend.angel.usersapp.entities.User;
+import com.springboot.backend.angel.usersapp.models.UserRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,7 +18,7 @@ public interface UserService {
 
     User save(User user);
 
-    Optional<User> update(User user, Long id);
+    Optional<User> update(UserRequest user, Long id);
 
     void deleteById(Long id);
 

@@ -1,6 +1,7 @@
 package com.springboot.backend.angel.usersapp.controllers;
 
 import com.springboot.backend.angel.usersapp.entities.User;
+import com.springboot.backend.angel.usersapp.models.UserRequest;
 import com.springboot.backend.angel.usersapp.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -57,7 +58,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody User user, BindingResult result, @PathVariable Long id) {
+    public ResponseEntity<?> update(@Valid @RequestBody UserRequest user, BindingResult result, @PathVariable Long id) {
 
         if (result.hasErrors()) {
             return validation(result);

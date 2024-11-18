@@ -1,6 +1,7 @@
 package com.springboot.backend.angel.usersapp.services;
 
 import com.springboot.backend.angel.usersapp.entities.User;
+import com.springboot.backend.angel.usersapp.models.UserRequest;
 import com.springboot.backend.angel.usersapp.respositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,7 +50,7 @@ public class UseServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Optional<User> update(User user, Long id) {
+    public Optional<User> update(UserRequest user, Long id) {
 
         Optional<User> userOptional = repository.findById(id);
         if (userOptional.isPresent()) {
