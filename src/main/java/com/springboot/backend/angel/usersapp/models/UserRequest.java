@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public class UserRequest {
+public class UserRequest implements IUser {
 
     @NotBlank(message = "No puede estar vació")
     private String name;
@@ -21,6 +21,8 @@ public class UserRequest {
     @NotBlank(message = "no puede estar vació")
     @Size(min = 4, max = 12, message = "el tamaño tiene que estar entre 4 y 12 caracteres")
     private String username;
+
+    private boolean admin;
 
     public String getName() {
         return name;
@@ -52,5 +54,13 @@ public class UserRequest {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 }

@@ -2,6 +2,7 @@ package com.springboot.backend.angel.usersapp.services;
 
 import com.springboot.backend.angel.usersapp.entities.Role;
 import com.springboot.backend.angel.usersapp.entities.User;
+import com.springboot.backend.angel.usersapp.models.IUser;
 import com.springboot.backend.angel.usersapp.models.UserRequest;
 import com.springboot.backend.angel.usersapp.respositories.RoleRepository;
 import com.springboot.backend.angel.usersapp.respositories.UserRepository;
@@ -50,14 +51,10 @@ public class UseServiceImpl implements UserService {
     @Transactional
     public User save(User user) {
 
-        List<Role> roles = new ArrayList<>();
-        Optional<Role> optionalRoleUser = roleRepository.findByName("ROLE_USER");
-
-        optionalRoleUser.ifPresent(roles::add);
-
-        user.setRoles(roles);
+        user.setRoles(getRoles(user));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return repository.save(user);
+
     }
 
     @Override
@@ -72,6 +69,10 @@ public class UseServiceImpl implements UserService {
             userDb.setLastName(user.getLastName());
             userDb.setEmail(user.getEmail());
             userDb.setUsername(user.getUsername());
+
+            List<Role> roles = getRoles(user);
+
+            userDb.setRoles(roles);
             return Optional.of(repository.save(userDb));
         }
 
@@ -84,4 +85,17 @@ public class UseServiceImpl implements UserService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+    private List<Role> getRoles(IUser user) {
+        List<Role> roles = new ArrayList<>();
+        Optional<Role> optionalRoleUser = roleRepository.findByName("ROLE_USER");
+        optionalRoleUser.ifPresent(roles::add);
+
+        if (user.isAdmin()) {
+            Optional<Role> optionalRoleAdmin = roleRepository.findByName("ROLE_ADMIN");
+            optionalRoleAdmin.ifPresent(roles::add);
+        }
+        return roles;
+    }
+
 }
