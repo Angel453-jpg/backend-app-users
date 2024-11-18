@@ -1,7 +1,9 @@
 package com.springboot.backend.angel.usersapp.services;
 
+import com.springboot.backend.angel.usersapp.entities.Role;
 import com.springboot.backend.angel.usersapp.entities.User;
 import com.springboot.backend.angel.usersapp.models.UserRequest;
+import com.springboot.backend.angel.usersapp.respositories.RoleRepository;
 import com.springboot.backend.angel.usersapp.respositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,10 +19,12 @@ import java.util.Optional;
 public class UseServiceImpl implements UserService {
 
     private final UserRepository repository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UseServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
+    public UseServiceImpl(UserRepository repository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -44,6 +49,13 @@ public class UseServiceImpl implements UserService {
     @Override
     @Transactional
     public User save(User user) {
+
+        List<Role> roles = new ArrayList<>();
+        Optional<Role> optionalRoleUser = roleRepository.findByName("ROLE_USER");
+
+        optionalRoleUser.ifPresent(roles::add);
+
+        user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return repository.save(user);
     }
