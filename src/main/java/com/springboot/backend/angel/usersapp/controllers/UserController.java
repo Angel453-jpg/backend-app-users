@@ -78,7 +78,7 @@ public class UserController {
         Optional<User> userOptional = userService.findById(id);
         if (userOptional.isPresent()) {
             userService.deleteById(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", "El usuario no existe"));
     }

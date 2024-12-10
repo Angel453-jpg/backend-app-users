@@ -29,10 +29,12 @@ public class User implements IUser {
 
     @NotEmpty(message = "no puede estar vacío")
     @Email(message = "no es una dirección de correo valida")
+    @Column(unique = true)
     private String email;
 
     @NotBlank(message = "no puede estar vacío")
     @Size(min = 4, max = 12, message = "el tamaño tiene que estar entre 4 y 12 caracteres")
+    @Column(unique = true)
     private String username;
 
     @NotBlank(message = "no puede estar vacío")
