@@ -51,7 +51,6 @@ public class User implements IUser {
     private List<Role> roles;
 
     @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean admin;
 
     public User() {
