@@ -1,7 +1,6 @@
 package com.springboot.backend.angel.usersapp.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.springboot.backend.angel.usersapp.models.IUser;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
